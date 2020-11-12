@@ -1,0 +1,7 @@
+﻿  Main.cpp
+E:\Uni\DiplomaSoftware\Tri3 2020\ADS103\Assignment3\Assignment3\Main.cpp(24,25): error C2664: 'void max_heap(int *,int,int)': cannot convert argument 1 from 'std::vector<int,std::allocator<int>> *' to 'int *'
+E:\Uni\DiplomaSoftware\Tri3 2020\ADS103\Assignment3\Assignment3\Main.cpp(24,18): message : Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
+E:\Uni\DiplomaSoftware\Tri3 2020\ADS103\Assignment3\Assignment3\Main.cpp(4,6): message : see declaration of 'max_heap'
+E:\Uni\DiplomaSoftware\Tri3 2020\ADS103\Assignment3\Assignment3\Main.cpp(36,23): error C2664: 'void build_maxheap(std::vector<int,std::allocator<int>> *,int)': cannot convert argument 1 from 'std::vector<int,std::allocator<int>>' to 'std::vector<int,std::allocator<int>> *'
+E:\Uni\DiplomaSoftware\Tri3 2020\ADS103\Assignment3\Assignment3\Main.cpp(36,19): message : No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+E:\Uni\DiplomaSoftware\Tri3 2020\ADS103\Assignment3\Assignment3\Main.cpp(21,6): message : see declaration of 'build_maxheap'
