@@ -1,55 +1,182 @@
 #include <iostream>
-
+#include <vector>
+#include <algorithm>
+#include <stdexcept>
 using namespace std;
 
-//Sort Function for Heap
-void max_heap(int* a, int m, int n) {
-    int j, t;
-    t = a[m];
-    j = 2 * m;
-    while (j <= n) {
-        if (j < n && a[j + 1] > a[j])
-            j = j + 1;
-        if (t > a[j])
-            break;
-        else if (t <= a[j]) {
-            a[j / 2] = a[j];
-            j = 2 * j;
-        }
-    }
-    a[j / 2] = t;
-    return;
-}
+// Data structure for Max Heap
+struct PriorityQueue
+{
+private:
+	// vector to store heap elements
+	vector<int> A;
 
-//Build Function
-void build_maxheap(int* a, int n) {
-    int k;
-    for (k = n / 2; k >= 1; k--) {
-        max_heap(a, k, n);
-    }
-}
+	// return parent of A[i]
+	// don't call this function if it is already a root node
+	int PARENT(int i)
+	{
+		return (i - 1) / 2;
+	}
 
-int main() {
-    //initialise data
-    int n, i;
-    cout << "enter no of elements of array\n";
+	// return left child of A[i]
+	int LEFT(int i)
+	{
+		return (2 * i + 1);
+	}
 
-    //Assign data to variable from user input - for testing
-    cin >> n;
+	// return right child of A[i]
+	int RIGHT(int i)
+	{
+		return (2 * i + 2);
+	}
 
-    //Define temporary array for testing - will use a vector later
-    int a[30];
+	// Recursive Heapify-down algorithm
+	// the node at index i and its two direct children
+	// violates the heap property
+	void heapify_down(int i)
+	{
+		// get left and right child of node at index i
+		int left = LEFT(i);
+		int right = RIGHT(i);
 
-    //Loop through and assign required input numbers
-    for (i = 1; i <= n; i++) {
-        cout << "enter elements" << " " << (i) << endl;
-        cin >> a[i];
-    }
+		int largest = i;
 
-    //Create the heap and display
-    build_maxheap(a, n);
-    cout << "Max Heap\n";
-    for (i = 1; i <= n; i++) {
-        cout << a[i] << endl;
-    }
+		// compare A[i] with its left and right child
+		// and find largest value
+		if (left < size() && A[left] > A[i])
+			largest = left;
+
+		if (right < size() && A[right] > A[largest])
+			largest = right;
+
+		// swap with child having greater value and
+		// call heapify-down on the child
+		if (largest != i) {
+			swap(A[i], A[largest]);
+			heapify_down(largest);
+		}
+	}
+
+	// Recursive Heapify-up algorithm
+	void heapify_up(int i)
+	{
+		// check if node at index i and its parent violates
+		// the heap property
+		if (i && A[PARENT(i)] < A[i])
+		{
+			// swap the two if heap property is violated
+			swap(A[i], A[PARENT(i)]);
+
+			// call Heapify-up on the parent
+			heapify_up(PARENT(i));
+		}
+	}
+
+public:
+	// return size of the heap
+	unsigned int size()
+	{
+		return A.size();
+	}
+
+	// function to check if heap is empty or not
+	bool empty()
+	{
+		return size() == 0;
+	}
+
+	// insert key into the heap
+	void push(int key)
+	{
+		// insert the new element to the end of the vector
+		A.push_back(key);
+
+		// get element index and call heapify-up procedure
+		int index = size() - 1;
+		heapify_up(index);
+	}
+
+	// function to remove element with highest priority (present at root)
+	void pop()
+	{
+		try {
+			// if heap has no elements, throw an exception
+			if (size() == 0)
+				throw out_of_range("Vector<X>::at() : "
+						"index is out of range(Heap underflow)");
+
+			// replace the root of the heap with the last element
+			// of the vector
+			A[0] = A.back();
+			A.pop_back();
+
+			// call heapify-down on root node
+			heapify_down(0);
+		}
+		// catch and print the exception
+		catch (const out_of_range& oor) {
+			cout << "\n" << oor.what();
+		}
+	}
+
+	// function to return element with highest priority (present at root)
+	int top()
+	{
+		try {
+			// if heap has no elements, throw an exception
+			if (size() == 0)
+				throw out_of_range("Vector<X>::at() : "
+						"index is out of range(Heap underflow)");
+
+			// else return the top (first) element
+			return A.at(0);	// or return A[0];
+		}
+		// catch and print the exception
+		catch (const out_of_range& oor) {
+			cout << "\n" << oor.what();
+		}
+	}
+};
+
+int main()
+{
+	PriorityQueue pq;
+
+	// Note - Priority is decided by element's value
+
+	pq.push(3);
+	pq.push(2);
+	pq.push(15);
+
+	cout << "Size is " << pq.size() << endl;
+
+	cout << pq.top() << " ";
+	pq.pop();
+
+	cout << pq.top() << " ";
+	pq.pop();
+
+	pq.push(5);
+	pq.push(4);
+	pq.push(45);
+
+	cout << endl << "Size is " << pq.size() << endl;
+
+	cout << pq.top() << " ";
+	pq.pop();
+
+	cout << pq.top() << " ";
+	pq.pop();
+
+	cout << pq.top() << " ";
+	pq.pop();
+
+	cout << pq.top() << " ";
+	pq.pop();
+
+	cout << endl << std::boolalpha << pq.empty();
+
+
+
+	return 0;
 }
